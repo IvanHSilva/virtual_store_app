@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:virtual_store/screens/category_screen.dart';
 
 class CategoryTile extends StatelessWidget {
 
@@ -17,7 +18,10 @@ class CategoryTile extends StatelessWidget {
       title: Text(snapshot.data['title']),
       trailing: Icon(Icons.keyboard_arrow_right),
       onTap: (){
-        
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CategoryScreen(snapshot))
+        );
       },
     );
   }
