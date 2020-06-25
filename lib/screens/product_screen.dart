@@ -1,6 +1,12 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:virtual_store/datas/cart_product.dart';
 import 'package:virtual_store/datas/product_data.dart';
+import 'package:virtual_store/models/cart_model.dart';
+import 'package:virtual_store/models/user_model.dart';
+import 'package:virtual_store/screens/login_screen.dart';
+
+import 'cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
 
@@ -127,8 +133,26 @@ class _ProductScreenState extends State<ProductScreen> {
                   width: 500.0,
                   child: RaisedButton(
                     onPressed: size != null ?
-                    (){} : null,
-                    child: Text('Adicionar ao Carrinho',
+                    (){
+                      if(UserModel.of(context).isLoggedIn()){
+                        //adicionar ao carrinho
+                        CartProduct cartProd = CartProduct();
+                        cartProd.size = size;
+                        cartProd.quantity = 1;
+                        cartProd.pid = product.id;
+                        cartProd.category = product.category;
+                        CartModel.of(context).addCartItem(cartProd);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => CartScreen()),
+                        );
+                      } else {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => LoginScreen()),
+                        );
+                      }
+                    } : null,
+                    child: Text(UserModel.of(context).isLoggedIn() ? 'Adicionar ao Carrinho'
+                      : 'Entre para Comprar',
                       style: TextStyle(
                         fontSize: 18.0
                       ),
